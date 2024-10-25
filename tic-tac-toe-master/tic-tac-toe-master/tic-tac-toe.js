@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(){
     const squares = document.querySelectorAll('#board div');
     const statusPlay = document.getElementById('status');
+    const restartButton = document.querySelector('.btn');
     let boardSlots = ['','','','','','','','',''];
     let player = ["X", "O"];
     let playerIndex = 0; 
+    let flag = false;
 
     const winnnerOptions = [
         [0,1,2],
@@ -31,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function(){
         square.classList.add('square');
 
         square.addEventListener('click',function(e){
-            if(boardSlots[index] === ''){
+            if(boardSlots[index] === '' && !flag){
                 boardSlots[index] = player[playerIndex];
 
                 square.textContent = player[playerIndex];
@@ -41,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 if(winningPlayer() !== false){
                     statusPlay.textContent = `Congratulations! ${player[playerIndex]} is the Winner!`;
                     statusPlay.classList.add('you-won');
+                    flag = true;
                     return;
                 }else{
                     playerIndex = playerIndex === 0 ? 1:0;
@@ -48,15 +51,31 @@ document.addEventListener("DOMContentLoaded", function(){
 
             }
 
-        square.addEventListener('mouseover', function(e){
-            e.target.classList.add('hover');
+            square.addEventListener('mouseover', function(e){
+                e.target.classList.add('hover');
+            });
+    
+            square.addEventListener('mouseout',function(e){
+                e.target.classList.remove('hover');
+            });
+           
         });
 
-        square.addEventListener('mouseout',function(e){
-            e.target.classList.remove('hover');
-        });
+        restartButton.addEventListener('click',function(e){
+            boardSlots.fill('');
+
+            squares.forEach(square =>{
+                square.textContent = ''; 
+                square.classList.remove('X','O');
+            });
+
+            playerIndex = 0;
+            flag = false;
+            statusPlay.textContent = 'Move your mouse over a square and click to play an X or an O.';
+            statusPlay.classList.remove('you-won');
 
         });
+
     });
 });
 
