@@ -18,6 +18,14 @@ document.addEventListener("DOMContentLoaded", function(){
                 playerIndex = playerIndex === 0 ? 1:0;
 
             }
+
+        square.addEventListener('mouseover', function(e){
+            e.target.classList.add('hover');
+        });
+
+        square.addEventListener('mouseout',function(e){
+            e.target.classList.remove('hover');
+        });
     
         });
     });
